@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../partial/head", { title: title }) %>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- CKEditor CDN -->
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+  </head>
+  <body class="bg-gray-50">
+    <%- include("../partial/sidebar") %>
+    <div class="ml-0 md:ml-64 flex flex-col min-h-screen">
+      <!-- Header -->
+      <%- include("../partial/header") %>
+
+      <div class="container mx-auto my-8 px-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Edit Blog</h1>
+
+        <!-- Form Container -->
+        <form
+          action="/admin/blogs/updates/<%= details.id %>"
+          method="POST"
+          enctype="multipart/form-data"
+          class="space-y-6"
+        >
+          <!-- Title -->
+          <div>
+            <label for="title" class="block text-gray-600 font-medium"
+              >Title:</label
+            >
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value="<%= details.title %>"
+              required
+              class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter blog title"
+            />
+          </div>
+
+          <!-- Category -->
+          <div>
+            <label for="category_id" class="block text-gray-600 font-medium"
+              >Category Id:</label
+            >
+            <select
+              id="category_id"
+              name="category_id"
+              class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Please Select</option>
+              <% categories.forEach(function(category) { %>
+              <option
+                value="<%= category.id %>"
+                <%= details.category_id === category.id ? "selected" : "" %>
+              >
+                <%= category.name %>
+              </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="description" class="block text-gray-600 font-medium"
+              >Description:</label
+            >
+            <textarea
+              id="description-editor"
+              name="description"
+              class="w-full p-3 mt-2 border border-gray-300 rounded-lg"
+              placeholder="Enter blog description"
+            ><%= details.description %></textarea>
+          </div>
+
+          <!-- Image Upload -->
+          <div>
+            <label for="image" class="block text-gray-600 font-medium"
+              >Image:</label
+            >
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              class="w-full mt-2 p-3 text-sm text-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              multiple
+            />
+            <p class="mt-2 text-sm text-gray-500">
+              Current images: 
+              <% if (Array.isArray(images) && images.length > 0) { %>
+                <ul>
+                  <% images.forEach(function(image) { %>
+                    <li><img src="<%= image %>" alt="Current image" class="w-32 mt-2" /></li>
+                  <% }) %>
+                </ul>
+              <% } else { %>
+                No images uploaded.
+              <% } %>
+              
+            </p>
+          </div>
+
+          <!-- Source -->
+          <div>
+            <label for="sourceBy" class="block text-gray-600 font-medium"
+              >Source By:</label
+            >
+            <input
+              type="text"
+              id="sourceBy"
+              name="sourceBy"
+              value="<%= details.sourceBy %>"
+              class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter the source"
+            />
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-between items-center">
+            <a
+              href="/admin/blogs"
+              class="text-blue-600 hover:text-blue-800 flex items-center space-x-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 13l-4 4m0 0l-4-4m4 4V7"
+                ></path>
+              </svg>
+              <span>Cancel</span>
+            </a>
+            <button
+              type="submit"
+              class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105"
+            >
+              Update Blog
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Initialize CKEditor
+      CKEDITOR.replace("description-editor");
+    </script>
+  </body>
+</html>

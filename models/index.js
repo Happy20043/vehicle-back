@@ -1,7 +1,6 @@
 const { Sequelize, DataTypes, Op } = require("sequelize");
 require("dotenv").config();
 
-
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -27,7 +26,12 @@ const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.Admin = require("./adminModel")(sequelize, Sequelize, DataTypes)
+db.Admin = require("./adminModel")(sequelize, Sequelize, DataTypes);
 db.Category = require("./categoryModel")(sequelize, Sequelize, DataTypes);
+db.Blog = require("./blogsModel")(sequelize, Sequelize, DataTypes);
+
+db.Blog.belongsTo(db.Category, { foreignKey: "category_id" });
+
+db.Category.hasMany(db.Blog, { foreignKey: "category_id" });
 
 module.exports = db;

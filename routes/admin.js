@@ -2,6 +2,8 @@ const express = require("express");
 const { authCheck } = require("../middleware/authCheck");
 const authController = require("../controller/authController");
 const categoryController = require("../controller/categoryController");
+const blogController = require("../controller/blogController");
+const { upload } = require("../config/multerConfig");
 
 const router = express.Router();
 
@@ -27,8 +29,18 @@ router.get("/category", categoryController.getIndex);
 router.get("/category/create", categoryController.create);
 router.post("/category/store", categoryController.store);
 router.get("/category/edit/:id", categoryController.edit);
-router.post("/category/:id/update", categoryController.update);  
+router.post("/category/:id/update", categoryController.update);
 router.post("/category/:id/delete", categoryController.destroy);
- 
+
+router.get("/blogs", blogController.getIndex);
+router.get("/blogs/create", blogController.create);
+router.post("/blogs/store", upload.array("image"), blogController.store);
+router.get("/blogs/:id/edit", blogController.edit);
+router.post(
+  "/blogs/updates/:id",
+  upload.array("image"),
+  blogController.update
+);
+router.post("/blogs/:id/delete", blogController.destroy);
 
 module.exports = router;
