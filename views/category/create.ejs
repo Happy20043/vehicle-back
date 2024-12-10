@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../partial/head", { title: title }) %>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Category</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50">
+    <%- include("../partial/sidebar") %>
+    <div class="ml-0 md:ml-64 flex flex-col min-h-screen">
+      <!-- Header -->
+      <%- include("../partial/header") %>
+
+      <div class="container mx-auto mt-8 px-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Create Category</h1>
+
+        <!-- Form Container -->
+        <div class="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+          <form action="/admin/category/store" method="POST">
+            <!-- Category Name -->
+            <div class="mb-6">
+              <label
+                for="name"
+                class="block text-lg font-medium text-gray-700 mb-2"
+                >Category Name</label
+              >
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg"
+                placeholder="Enter category name"
+                required
+              />
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-between items-center">
+              <a
+                href="/admin/category"
+                class="text-blue-600 hover:text-blue-800 flex items-center space-x-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 13l-4 4m0 0l-4-4m4 4V7"
+                  ></path>
+                </svg>
+                <span>Cancel</span>
+              </a>
+              <button
+                type="submit"
+                class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                Create Category
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

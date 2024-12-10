@@ -1,0 +1,52 @@
+<header
+  class="bg-[#218838] shadow-md py-5  px-6 flex justify-between sticky top-0 items-center dark:bg-gray-800 dark:text-gray-200 relative"
+>
+  <!-- Sidebar Toggle -->
+  <button
+    class="text-white focus:outline-none md:hidden"
+    id="sidebar-toggle"
+  > 
+  <i class="fas fa-bars"></i>
+</button>
+<div class="text-white">
+  VehiclePro
+</div>
+  <!-- User Profile Section -->
+  
+</header>
+
+<!-- Add this CSS for custom styles -->
+<style>
+  /* Transition for the popup visibility */
+  #user-popup-toggle:focus + #user-popup,
+  #user-popup-toggle:hover + #user-popup {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Improved hover effect for sidebar and popup links */
+  .popup-link {
+    display: flex;
+    align-items: center;
+    color: #333;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .popup-link:hover {
+    background-color: #f0f0f0;
+    color: #007bff;
+  }
+
+  .logout:hover {
+    color: #e74c3c; /* Red color on hover for logout */
+  }
+
+  /* Additional popup styling */
+  .popup {
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .popup-link i {
+    margin-right: 8px;
+  }
+</style>
