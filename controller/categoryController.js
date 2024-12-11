@@ -1,17 +1,46 @@
-const { Category } = require("../models");
+const { Category, Sequelize } = require("../models");
 
 // Get all categories
 const getIndex = async (req, res) => {
   try {
+    const { page = 1, limit = 10, search = "" } = req.query;
+
+    const offset = (page - 1) * limit;
+
+    const searchCondition = search
+      ? {
+          name: {
+            [Sequelize.Op.iLike]: `%${search}%`,
+          },
+        }
+      : {};
+    // Fetch categories with search and pagination
     const categories = await Category.findAll({
-      order: [["created_at", "DESC"]],
+      where: searchCondition, 
+      limit: parseInt(limit),
+      offset: offset,
     });
-    res.render("category/index", { categories, title: "Category List" });
+
+    // Calculate total pages
+    const totalCategories = await Category.count({
+      where: searchCondition,
+    });
+
+    const totalPages = Math.ceil(totalCategories / limit);
+
+     res.render("category/index", {
+      categories,
+      title: "Category List",
+      search,
+      currentPage: parseInt(page),
+      totalPages: totalPages,  
+    });
   } catch (error) {
     console.error("Error fetching categories:", error);
     res.status(500).send("Internal Server Error");
   }
 };
+
 
 // Render create category form
 const create = async (req, res) => {

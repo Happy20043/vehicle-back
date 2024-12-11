@@ -29,6 +29,7 @@ db.Sequelize = Sequelize;
 db.Admin = require("./adminModel")(sequelize, Sequelize, DataTypes);
 db.Category = require("./categoryModel")(sequelize, Sequelize, DataTypes);
 db.Blog = require("./blogsModel")(sequelize, Sequelize, DataTypes);
+db.Contact = require("./contactModel")(sequelize,Sequelize,DataTypes)
 
 db.Blog.belongsTo(db.Category, { foreignKey: "category_id" });
 

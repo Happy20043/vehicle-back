@@ -3,6 +3,7 @@ const { authCheck } = require("../middleware/authCheck");
 const authController = require("../controller/authController");
 const categoryController = require("../controller/categoryController");
 const blogController = require("../controller/blogController");
+const contactController = require("../controller/contactController");
 const { upload } = require("../config/multerConfig");
 
 const router = express.Router();
@@ -42,5 +43,7 @@ router.post(
   blogController.update
 );
 router.post("/blogs/:id/delete", blogController.destroy);
+
+router.get("/contact", contactController.getIndex);
 
 module.exports = router;

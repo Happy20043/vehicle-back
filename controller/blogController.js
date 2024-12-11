@@ -1,17 +1,44 @@
-const { Blog, Category } = require("../models");
+const { Blog, Category, Sequelize } = require("../models");
 
 const getIndex = async (req, res) => {
   try {
+    const { page = 1, limit = 10, search = "" } = req.query;
+
+    const offset = (page - 1) * limit;
+
+    const searchCondition = search
+      ? {
+          title: {
+            [Sequelize.Op.iLike]: `%${search}%`,
+          },
+        }
+      : {};
+
     const blogs = await Blog.findAll({
-      include: [{
-        model: Category,
-        as: "category",  
-        attributes: ["id", "name"],   
-      }],
-      order: [["created_at", "DESC"]],
+      where: searchCondition,
+      include: [
+        {
+          model: Category,
+          as: "category",
+          attributes: ["id", "name"],
+        },
+      ],
+      limit: parseInt(limit),
+      offset: offset,
     });
- 
-    res.render("blogs/index", { blogs, title: "Blogs List" });
+
+    const totalBlogs = await Blog.count({
+      where: searchCondition,
+    });
+
+    const totalPages = Math.ceil(totalBlogs / limit);
+    res.render("blogs/index", {
+      blogs,
+      title: "Blogs List",
+      currentPage: parseInt(page),
+      totalPages,
+      search,
+    });
   } catch (error) {
     console.error("Error fetching blogs:", error);
     res.status(500).send("Internal Server Error");
@@ -37,16 +64,15 @@ const store = async (req, res) => {
   const { title, description, sourceBy, status, category_id } = req.body;
 
   try {
-    // Handle the multiple image uploads
     let images = [];
     if (req.files) {
-      images = req.files.map((file) => file.location || file.path); // Save the file locations (URLs or paths)
+      images = req.files.map((file) => file.location);
     }
 
     const blog = await Blog.create({
       title,
       description,
-      images: images, // Store multiple images as an array of URLs/paths
+      images: images,
       sourceBy,
       status,
       category_id,
@@ -74,7 +100,6 @@ const edit = async (req, res) => {
   try {
     const blog = await Blog.findByPk(req.params.id);
     const categories = await Category.findAll();
- 
 
     if (!blog) {
       return res.status(404).send("Blog not found");
@@ -103,19 +128,16 @@ const update = async (req, res) => {
       return res.status(404).send("Blog not found");
     }
 
-    // If files are uploaded, handle them
-    let images = blog.images || []; // Default to existing images if any
+    let images = [];
 
-    // Check if there are uploaded files
     if (req.files) {
-      images = req.files.map((file) => file.path); // Save the file paths (or URLs if using cloud storage)
+      images = req.files.map((file) => file.location);
     }
 
-    // Update the blog entry
     await blog.update({
       title,
       description,
-      images, // Save the array of image paths
+      images: images.length > 0 ? images : blog.images,
       sourceBy,
       status,
       category_id,
