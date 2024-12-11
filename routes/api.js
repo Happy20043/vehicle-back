@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get("/categories", apiController.getCategory);
 router.get("/blogs", apiController.getBlogs);
+router.get("/latestBlogs", apiController.getBlogsBeforeLatest);
 router.get("/blogs/:id", apiController.getOneBlog);
 router.post("/contact", apiController.createContact);
 
