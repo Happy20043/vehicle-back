@@ -24,7 +24,7 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      sourceBy: {
+      source_by: {
         type: DataTypes.STRING,
         allowNull: true,
       },
