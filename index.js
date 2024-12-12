@@ -9,7 +9,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override");
 const app = express();
-app.use(methodOverride("_method")); // This will allow you to simulate DELETE requests using the _method query parameter or hidden input field.
+app.use(methodOverride("_method"));
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -37,7 +37,7 @@ const synchronizeAndSeed = async () => {
 
 // synchronizeAndSeed();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5077;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

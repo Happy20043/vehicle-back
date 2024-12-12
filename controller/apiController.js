@@ -102,12 +102,17 @@ const getBlogsBeforeLatest = async (req, res) => {
 
 const getOneBlog = async (req, res) => {
   try {
-    // Extract the blog ID from the request parameters
-    const blogId = req.params.id;
+    // Extract the blog title from the request parameters
+    const blogTitle = req.params.title;
 
-    // Find the blog by ID, including its associated category
+    // Validate the title
+    if (!blogTitle) {
+      return res.status(400).json({ message: "Blog title is required" });
+    }
+
+    // Find the blog by title, including its associated category
     const blog = await Blog.findOne({
-      where: { id: blogId },
+      where: { title: blogTitle },
       include: [
         {
           model: Category,
@@ -125,14 +130,14 @@ const getOneBlog = async (req, res) => {
     // Return the found blog
     res.status(200).json(blog);
   } catch (error) {
-    console.error("Error fetching the blog:", error);
+    console.error("Error fetching the blog:", error.message);
 
     res.status(500).json({
       message: "An error occurred while fetching the blog",
-      error: error.message,
     });
   }
 };
+
 
 const createContact = async (req, res) => {
   try {
