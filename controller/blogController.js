@@ -61,7 +61,7 @@ const create = async (req, res) => {
 };
 
 const store = async (req, res) => {
-  const { title, description, sourceBy, status, category_id } = req.body;
+  const { title, description, source_by, status, category_id } = req.body;
 
   try {
     let images = [];
@@ -73,7 +73,7 @@ const store = async (req, res) => {
       title,
       description,
       images: images,
-      sourceBy,
+      source_by,
       status,
       category_id,
     });
@@ -119,7 +119,7 @@ const edit = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { title, description, sourceBy, status, category_id } = req.body;
+  const { title, description, source_by, status, category_id } = req.body;
   const { id } = req.params;
 
   try {
@@ -138,7 +138,7 @@ const update = async (req, res) => {
       title,
       description,
       images: images.length > 0 ? images : blog.images,
-      sourceBy,
+      source_by,
       status,
       category_id,
     });

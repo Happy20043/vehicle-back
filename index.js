@@ -35,7 +35,7 @@ const synchronizeAndSeed = async () => {
   }
 };
 
-synchronizeAndSeed();
+// synchronizeAndSeed();
 
 const PORT = process.env.PORT || 5077;
 
